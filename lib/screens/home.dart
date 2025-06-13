@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:stroll_demo/l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -97,6 +98,11 @@ class _TopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    const String exampleTime = "22";
+    const String exampleMinutes = "00";
+    const String exampleCount = "103";
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -105,7 +111,7 @@ class _TopBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Stroll Bonfire',
+              l10n.strollBonfireTitle,
               style: textTheme.headlineLarge?.copyWith(
                 color: const Color(0xFFCCC8FF),
                 shadows: const [
@@ -137,7 +143,7 @@ class _TopBar extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              '22h 00m',
+              l10n.timeRemaining(exampleTime, exampleMinutes),
               style: textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
@@ -150,7 +156,7 @@ class _TopBar extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              '103',
+              l10n.participantCount(exampleCount),
               style: textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
@@ -175,6 +181,10 @@ class _ProfileBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    const String exampleName = "Angelina";
+    const String exampleAge = "28";
 
     return Column(
       children: [
@@ -206,7 +216,7 @@ class _ProfileBar extends StatelessWidget {
                               left: _textPadding,
                             ),
                             child: Text(
-                              'Angelina, 28',
+                              l10n.profileNameAge(exampleName, exampleAge),
                               style: textTheme.labelSmall?.copyWith(
                                 color: colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.w700,
@@ -217,7 +227,7 @@ class _ProfileBar extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: _textPadding),
                             child: Text(
-                              'What is your favorite time of the day?',
+                              l10n.favoriteTimeQuestion,
                               style: textTheme.titleLarge?.copyWith(
                                 color: colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.w700,
@@ -252,7 +262,7 @@ class _ProfileBar extends StatelessWidget {
         const SizedBox(height: _yOffset + 10),
         Center(
           child: Text(
-            '“Mine is definitely the peace in the morning.”',
+            l10n.profileQuote,
             style: textTheme.bodySmall?.copyWith(
               color: colorScheme.primaryContainer,
               fontStyle: FontStyle.italic,
@@ -270,27 +280,23 @@ class _ButtonsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
-      children: const [
+      children: [
         Row(
           children: [
-            Expanded(child: _Button('A', 'The peace in the early mornings')),
-            SizedBox(width: 12),
-            Expanded(child: _Button('B', 'The magical golden hours')),
+            Expanded(child: _Button('A', l10n.optionA)),
+            const SizedBox(width: 12),
+            Expanded(child: _Button('B', l10n.optionB)),
           ],
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(child: _Button('C', 'Wind-down time after dinners')),
-            SizedBox(width: 12),
-            Expanded(
-              child: _Button(
-                'D',
-                'The serenity past midnight',
-                isSelected: true,
-              ),
-            ),
+            Expanded(child: _Button('C', l10n.optionC)),
+            const SizedBox(width: 12),
+            Expanded(child: _Button('D', l10n.optionD, isSelected: true)),
           ],
         ),
       ],
@@ -366,12 +372,13 @@ class _BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Row(
       children: [
         Expanded(
           child: Text(
-            'Pick your option.\nSee who has a similar mind.',
+            l10n.pickOptionPrompt,
             style: textTheme.bodyMedium?.copyWith(color: colorScheme.secondary),
             softWrap: true,
           ),

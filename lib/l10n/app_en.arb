@@ -1,0 +1,73 @@
+{
+  "@@locale": "en",
+  "strollBonfireTitle": "Stroll Bonfire",
+  "@strollBonfireTitle": {
+    "description": "Title text in the top bar"
+  },
+  "timeRemaining": "{time}h {minutes}m",
+  "@timeRemaining": {
+    "description": "Time remaining display, e.g., 22h 00m",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "22"
+      },
+      "minutes": {
+        "type": "String",
+        "example": "00"
+      }
+    }
+  },
+  "participantCount": "{count}",
+  "@participantCount": {
+    "description": "Number of participants, e.g., 103",
+    "placeholders": {
+      "count": {
+        "type": "String",
+        "example": "103"
+      }
+    }
+  },
+  "profileNameAge": "{name}, {age}",
+  "@profileNameAge": {
+    "description": "Profile display of name and age, e.g., Angelina, 28",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Angelina"
+      },
+      "age": {
+        "type": "String",
+        "example": "28"
+      }
+    }
+  },
+  "favoriteTimeQuestion": "What is your favorite time of the day?",
+  "@favoriteTimeQuestion": {
+    "description": "Question displayed in the profile section"
+  },
+  "profileQuote": "“Mine is definitely the peace in the morning.”",
+  "@profileQuote": {
+    "description": "Quote displayed below the profile question"
+  },
+  "optionA": "The peace in the early mornings",
+  "@optionA": {
+    "description": "Text for option A button"
+  },
+  "optionB": "The magical golden hours",
+  "@optionB": {
+    "description": "Text for option B button"
+  },
+  "optionC": "Wind-down time after dinners",
+  "@optionC": {
+    "description": "Text for option C button"
+  },
+  "optionD": "The serenity past midnight",
+  "@optionD": {
+    "description": "Text for option D button"
+  },
+  "pickOptionPrompt": "Pick your option.\nSee who has a similar mind.",
+  "@pickOptionPrompt": {
+    "description": "Prompt text in the bottom bar"
+  }
+}
