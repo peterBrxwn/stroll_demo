@@ -1,5 +1,8 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Project imports:
 import 'package:stroll_demo/l10n/app_localizations.dart';
 import 'package:stroll_demo/screens/home.dart';
 import 'package:stroll_demo/theme/theme.dart';
