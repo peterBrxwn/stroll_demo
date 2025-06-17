@@ -1,10 +1,14 @@
 // Flutter imports:
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // Project imports:
+import 'package:stroll_demo/gen/assets.gen.dart';
 import 'package:stroll_demo/l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,40 +16,24 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final textTheme = Theme.of(context).textTheme;
-
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            bottom: screenHeight * 0.25,
-            child: Image.asset(
-              'assets/images/background.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned.fill(
-            child: Image.asset('assets/images/fade.png', fit: BoxFit.cover),
-          ),
+          Assets.images.background.image(fit: BoxFit.cover, height: 502.h),
+          Assets.images.fade.image(fit: BoxFit.cover, width: double.infinity),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(
-                top: 15,
-                bottom: 7,
-                left: 15,
-                right: 15,
-              ),
+              padding: EdgeInsets.fromLTRB(15.w, 15.h, 15.w, 7.h),
               child: Column(
-                children: const [
-                  SizedBox(height: 14),
+                children: [
+                  14.verticalSpace,
                   _TopBar(),
                   Spacer(),
                   _ProfileBar(),
-                  SizedBox(height: 14),
-                  _ButtonsBar(),
-                  SizedBox(height: 14),
-                  _BottomBar(),
+                  14.verticalSpace,
+                  _AnswerOptionsGrid(),
+                  14.verticalSpace,
+                  _ActionBar(),
                 ],
               ),
             ),
@@ -53,45 +41,71 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: 1,
         items: [
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/cards.svg', height: 28),
+            icon: _NavIcon(icon: Assets.icons.cards.svg()),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Badge(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              label: Text(
-                '',
-                style: textTheme.labelSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 7,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: SvgPicture.asset('assets/icons/bonfire.svg', height: 28),
-              ),
-            ),
+            icon: _NavIcon(icon: Assets.icons.bonfire.svg(), label: ''),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Badge.count(
-              count: 10,
-              textStyle: textTheme.labelSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-              child: SvgPicture.asset('assets/icons/chat.svg', height: 28),
-            ),
+            icon: _NavIcon(icon: Assets.icons.chat.svg(), label: '10'),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/user.svg', height: 28),
+            icon: _NavIcon(icon: Assets.icons.user.svg()),
             label: '',
           ),
         ],
       ),
+    );
+  }
+}
+
+class _NavIcon extends StatelessWidget {
+  const _NavIcon({required this.icon, this.label});
+
+  final SvgPicture icon;
+  final String? label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
+    if (label == null) return icon;
+
+    return Stack(
+      alignment: Alignment.topRight,
+      children: [
+        Padding(padding: EdgeInsets.only(right: 8.23.w), child: icon),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: theme.bottomNavigationBarTheme.backgroundColor!,
+              width: 1.4.sp,
+            ),
+            borderRadius: BorderRadius.circular(6.5.sp),
+            color: theme.badgeTheme.backgroundColor,
+          ),
+          width: 16.w,
+          height: 13.h,
+          alignment: Alignment.center,
+          padding: Platform.isIOS ? EdgeInsets.only(top: 1.h) : null,
+          child: Text(
+            label!,
+            style: textTheme.labelSmall?.copyWith(
+              fontSize: 7.sp,
+              color: colorScheme.onPrimaryContainer,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -108,6 +122,10 @@ class _TopBar extends StatelessWidget {
     const String exampleTime = "22";
     const String exampleMinutes = "00";
     const String exampleCount = "103";
+    const List<Shadow> textShadows = [
+      Shadow(color: Color(0x4D000000), blurRadius: 1.0, offset: Offset(0, 1)),
+      Shadow(color: Color(0x33000000), blurRadius: 4.0, offset: Offset(0, 1)),
+    ];
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -118,7 +136,7 @@ class _TopBar extends StatelessWidget {
             Text(
               l10n.strollBonfireTitle,
               style: textTheme.headlineLarge?.copyWith(
-                color: const Color(0xFFCCC8FF),
+                color: colorScheme.primaryContainer,
                 shadows: const [
                   Shadow(
                     color: Color(0x33000000),
@@ -126,45 +144,67 @@ class _TopBar extends StatelessWidget {
                     offset: Offset(0, 0),
                   ),
                   Shadow(
+                    color: Color(0xFFBEBEBE),
+                    blurRadius: 2.0,
+                    offset: Offset(0, 0),
+                  ),
+                  Shadow(
                     color: Color(0x8024232F),
-                    blurRadius: 7.9,
+                    blurRadius: 2.0,
                     offset: Offset(0, 1),
                   ),
                 ],
               ),
             ),
-            const SizedBox(width: 8),
-            SvgPicture.asset('assets/icons/down_arrow.svg'),
+            8.horizontalSpace,
+            Stack(
+              children: [
+                Transform.translate(
+                  offset: const Offset(0, 0.3),
+                  child: Assets.icons.downArrow.svg(
+                    colorFilter: const ColorFilter.mode(
+                      Color(0x80000000),
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ),
+                Assets.icons.downArrow.svg(),
+              ],
+            ),
           ],
         ),
-        const SizedBox(height: 8),
+        8.verticalSpace,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 2.5),
-              child: SvgPicture.asset('assets/icons/clock.svg'),
+            _ShadowedIcon(
+              iconPath: Assets.icons.clock.path,
+              shadows: textShadows,
+              color: colorScheme.onSurface,
             ),
-            const SizedBox(width: 4),
+            4.horizontalSpace,
             Text(
               l10n.timeRemaining(exampleTime, exampleMinutes),
               style: textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
+                shadows: textShadows,
               ),
             ),
-            const SizedBox(width: 20),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 2.5),
-              child: SvgPicture.asset('assets/icons/person.svg'),
+            20.horizontalSpace,
+            _ShadowedIcon(
+              iconPath: Assets.icons.person.path,
+              shadows: textShadows,
+              color: colorScheme.onSurface,
             ),
-            const SizedBox(width: 4),
+            4.horizontalSpace,
             Text(
               l10n.participantCount(exampleCount),
               style: textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
+                shadows: textShadows,
               ),
             ),
           ],
@@ -174,13 +214,41 @@ class _TopBar extends StatelessWidget {
   }
 }
 
+class _ShadowedIcon extends StatelessWidget {
+  const _ShadowedIcon({
+    required this.iconPath,
+    required this.shadows,
+    required this.color,
+  });
+
+  final String iconPath;
+  final List<Shadow> shadows;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        ...shadows.map(
+          (s) => Transform.translate(
+            offset: s.offset,
+            child: SvgPicture.asset(
+              iconPath,
+              colorFilter: ColorFilter.mode(s.color, BlendMode.srcIn),
+            ),
+          ),
+        ),
+        SvgPicture.asset(
+          iconPath,
+          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+        ),
+      ],
+    );
+  }
+}
+
 class _ProfileBar extends StatelessWidget {
   const _ProfileBar();
-
-  static const double _xOffset = 37.5;
-  static const double _yOffset = 12.5;
-  // This padding is used to separate the text from the avatar,
-  static const double _textPadding = 40.0;
 
   @override
   Widget build(BuildContext context) {
@@ -192,87 +260,69 @@ class _ProfileBar extends StatelessWidget {
     const String exampleAge = "28";
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            const SizedBox(width: 10),
-            Expanded(
-              child: Stack(
-                alignment: Alignment.centerLeft,
-                children: [
-                  Transform.translate(
-                    offset: const Offset(_xOffset, _yOffset),
-                    child: Padding(
-                      // This padding ensures the text column doesn't extend too far right,
-                      // effectively reserving space relative to the avatar's overlap.
-                      padding: const EdgeInsets.only(right: _xOffset),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: const EdgeInsets.only(
-                              right: 12,
-                              top: 4,
-                              bottom: 4,
-                              left: _textPadding,
-                            ),
-                            child: Text(
-                              l10n.profileNameAge(exampleName, exampleAge),
-                              style: textTheme.labelSmall?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Padding(
-                            padding: const EdgeInsets.only(left: _textPadding),
-                            child: Text(
-                              l10n.favoriteTimeQuestion,
-                              style: textTheme.titleLarge?.copyWith(
-                                color: colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              softWrap: true,
-                            ),
-                          ),
-                        ],
-                      ),
+        Padding(
+          padding: EdgeInsets.only(left: 12.w),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(10.sp),
+                ),
+                height: 20.h,
+                padding: EdgeInsets.only(right: 8.w, left: 32.w),
+                margin: EdgeInsets.only(left: 32.w, top: 7.h),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: 1,
+                  child: Text(
+                    l10n.profileNameAge(exampleName, exampleAge),
+                    style: textTheme.labelSmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: colorScheme.surfaceContainerHighest,
-                        width: 5,
-                      ),
-                    ),
-                    child: const CircleAvatar(
-                      radius: 28,
-                      backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1527980965255-d3b416303d12',
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.only(left: 69.w, top: 36.h, right: 15.w),
+                child: Text(
+                  l10n.favoriteTimeQuestion,
+                  style: textTheme.titleLarge?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  softWrap: true,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: colorScheme.surfaceContainerHighest,
+                    width: 5.sp,
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: 25.sp,
+                  backgroundImage: Assets.images.profilePicture.provider(),
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: _yOffset + 10),
+        9.verticalSpace,
         Center(
           child: Text(
             l10n.profileQuote,
             style: textTheme.bodySmall?.copyWith(
-              color: colorScheme.primaryContainer,
+              color: const Color(0xB3CBC9FF),
               fontStyle: FontStyle.italic,
+              height: 1.2,
             ),
             softWrap: true,
+            textAlign: TextAlign.center,
           ),
         ),
       ],
@@ -280,8 +330,8 @@ class _ProfileBar extends StatelessWidget {
   }
 }
 
-class _ButtonsBar extends StatelessWidget {
-  const _ButtonsBar();
+class _AnswerOptionsGrid extends StatelessWidget {
+  const _AnswerOptionsGrid();
 
   @override
   Widget build(BuildContext context) {
@@ -290,18 +340,15 @@ class _ButtonsBar extends StatelessWidget {
     return Column(
       children: [
         Row(
-          children: [
-            Expanded(child: _Button('A', l10n.optionA)),
-            const SizedBox(width: 12),
-            Expanded(child: _Button('B', l10n.optionB)),
-          ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [_OptionButton('A', l10n.optionA), _OptionButton('B', l10n.optionB)],
         ),
-        const SizedBox(height: 12),
+        12.verticalSpace,
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: _Button('C', l10n.optionC)),
-            const SizedBox(width: 12),
-            Expanded(child: _Button('D', l10n.optionD, isSelected: true)),
+            _OptionButton('C', l10n.optionC),
+            _OptionButton('D', l10n.optionD, isSelected: true),
           ],
         ),
       ],
@@ -309,12 +356,12 @@ class _ButtonsBar extends StatelessWidget {
   }
 }
 
-class _Button extends StatelessWidget {
+class _OptionButton extends StatelessWidget {
   final String letter;
   final String text;
   final bool isSelected;
 
-  const _Button(this.letter, this.text, {this.isSelected = false});
+  const _OptionButton(this.letter, this.text, {this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {
@@ -322,20 +369,39 @@ class _Button extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 10.h),
+      width: 166.w,
+      height: 57.h,
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.sp),
         border: Border.all(
           color: isSelected ? colorScheme.primary : Colors.transparent,
-          width: 2,
+          width: 2.w,
         ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x4D000000),
+            offset: Offset(-1, -1),
+            blurRadius: 2.0,
+          ),
+          BoxShadow(
+            color: Color(0x4D484848),
+            offset: Offset(1, 1),
+            blurRadius: 2.0,
+          ),
+          BoxShadow(
+            color: Color(0x4D000000),
+            offset: Offset(2, 2),
+            blurRadius: 8.0,
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
-            width: 24,
-            height: 24,
+            width: 20.w,
+            height: 20.h,
             decoration:
                 isSelected
                     ? BoxDecoration(
@@ -343,20 +409,20 @@ class _Button extends StatelessWidget {
                       shape: BoxShape.circle,
                     )
                     : BoxDecoration(
-                      shape: BoxShape.circle,
                       border: Border.all(color: colorScheme.outline, width: 1),
+                      shape: BoxShape.circle,
                     ),
             child: Center(
               child: Text(
                 letter,
-                style: textTheme.bodyMedium?.copyWith(
+                style: textTheme.bodySmall?.copyWith(
                   color:
                       isSelected ? colorScheme.onPrimary : colorScheme.outline,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          10.horizontalSpace,
           Expanded(
             child: Text(
               text,
@@ -370,8 +436,8 @@ class _Button extends StatelessWidget {
   }
 }
 
-class _BottomBar extends StatelessWidget {
-  const _BottomBar();
+class _ActionBar extends StatelessWidget {
+  const _ActionBar();
 
   @override
   Widget build(BuildContext context) {
@@ -381,38 +447,67 @@ class _BottomBar extends StatelessWidget {
 
     return Row(
       children: [
+        3.5.horizontalSpace,
         Expanded(
           child: Text(
             l10n.pickOptionPrompt,
-            style: textTheme.bodyMedium?.copyWith(color: colorScheme.secondary),
+            style: textTheme.bodySmall?.copyWith(
+              color: colorScheme.secondary,
+              height: 1.2,
+            ),
             softWrap: true,
           ),
         ),
-        const SizedBox(width: 8),
-        GestureDetector(
+        6.horizontalSpace,
+        _CircleButton(
           onTap: () {},
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: colorScheme.primary, width: 2),
-            ),
-            padding: const EdgeInsets.all(12.5),
-            child: SvgPicture.asset('assets/icons/microphone.svg'),
-          ),
+          hasBorder: true,
+          child: Assets.icons.microphone.svg(),
         ),
-        const SizedBox(width: 8),
-        GestureDetector(
+        6.horizontalSpace,
+        _CircleButton(
           onTap: () {},
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: colorScheme.primary,
-            ),
-            padding: const EdgeInsets.all(12.5),
-            child: SvgPicture.asset('assets/icons/forward.svg'),
-          ),
+          backgroundColor: colorScheme.primary,
+          child: Assets.icons.forward.svg(),
         ),
+        3.5.horizontalSpace,
       ],
+    );
+  }
+}
+
+class _CircleButton extends StatelessWidget {
+  const _CircleButton({
+    required this.child,
+    required this.onTap,
+    this.hasBorder = false,
+    this.backgroundColor,
+  });
+
+  final Widget child;
+  final VoidCallback onTap;
+  final bool hasBorder;
+  final Color? backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: backgroundColor,
+          border:
+              hasBorder
+                  ? Border.all(color: colorScheme.primary, width: 2.2.w)
+                  : null,
+        ),
+        width: 48.w,
+        height: 48.h,
+        child: Center(child: child),
+      ),
     );
   }
 }
