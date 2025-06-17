@@ -2,11 +2,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 // Project imports:
 import 'package:stroll_demo/gen/assets.gen.dart';
 import 'package:stroll_demo/l10n/app_localizations.dart';
@@ -19,8 +17,50 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Assets.images.background.image(fit: BoxFit.cover, height: 502.h),
-          Assets.images.fade.image(fit: BoxFit.cover, width: double.infinity),
+          Assets.images.background.image(
+            fit: BoxFit.cover,
+            height: 502.h,
+            width: double.infinity,
+          ),
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.0, 0.14, 0.234, 0.4397, 0.486, 0.5252, 0.5514, 0.62],
+                colors: [
+                  Color.fromRGBO(0, 0, 0, 0.4),
+                  Color.fromRGBO(0, 0, 0, 0.123359),
+                  Color.fromRGBO(0, 0, 0, 0.0),
+                  Color.fromRGBO(15, 17, 21, 0.0),
+                  Color.fromRGBO(13, 14, 18, 0.28),
+                  Color.fromRGBO(11, 12, 15, 0.64),
+                  Color.fromRGBO(9, 11, 13, 0.8),
+                  Colors.black,
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment(0.0026, -0.6256),
+                radius: 0.7467,
+                stops: [0.0, 0.6328, 0.7566, 0.8844, 1.0],
+                colors: [
+                  Color.fromRGBO(0, 0, 0, 0.045),
+                  Color.fromRGBO(0, 0, 0, 0.107193),
+                  Color.fromRGBO(0, 0, 0, 0.135),
+                  Color.fromRGBO(0, 0, 0, 0.195),
+                  Color.fromRGBO(0, 0, 0, 0.24),
+                ],
+              ),
+            ),
+          ),
           SafeArea(
             child: Padding(
               padding: EdgeInsets.fromLTRB(15.w, 15.h, 15.w, 7.h),
@@ -133,27 +173,38 @@ class _TopBar extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              l10n.strollBonfireTitle,
-              style: textTheme.headlineLarge?.copyWith(
-                color: colorScheme.primaryContainer,
-                shadows: const [
-                  Shadow(
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
                     color: Color(0x33000000),
-                    blurRadius: 7.9,
-                    offset: Offset(0, 0),
-                  ),
-                  Shadow(
-                    color: Color(0xFFBEBEBE),
-                    blurRadius: 2.0,
-                    offset: Offset(0, 0),
-                  ),
-                  Shadow(
-                    color: Color(0x8024232F),
-                    blurRadius: 2.0,
-                    offset: Offset(0, 1),
+                    offset: Offset(0, 2),
+                    blurRadius: 20.0.r,
                   ),
                 ],
+              ),
+              child: Text(
+                l10n.strollBonfireTitle,
+                style: textTheme.headlineLarge?.copyWith(
+                  color: colorScheme.primaryContainer,
+                  shadows: [
+                    Shadow(
+                      color: Color(0x33000000),
+                      blurRadius: 7.9.r,
+                      offset: Offset(0, 0),
+                    ),
+                    Shadow(
+                      color: Color(0xFFBEBEBE),
+                      blurRadius: 2.0.r,
+                      offset: Offset(0, 0),
+                    ),
+                    Shadow(
+                      color: Color(0x8024232F),
+                      blurRadius: 2.0.r,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
               ),
             ),
             8.horizontalSpace,
@@ -173,9 +224,10 @@ class _TopBar extends StatelessWidget {
             ),
           ],
         ),
-        8.verticalSpace,
+        2.verticalSpace,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             _ShadowedIcon(
@@ -341,7 +393,10 @@ class _AnswerOptionsGrid extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_OptionButton('A', l10n.optionA), _OptionButton('B', l10n.optionB)],
+          children: [
+            _OptionButton('A', l10n.optionA),
+            _OptionButton('B', l10n.optionB),
+          ],
         ),
         12.verticalSpace,
         Row(
