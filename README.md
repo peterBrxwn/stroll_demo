@@ -8,16 +8,12 @@ A Flutter application demonstrating clean UI/UX principles.
 
 <table>
   <tr>
-    <td align="center">App Screen (iOS)</td>
-    <td>&nbsp;&nbsp;&nbsp;</td>
     <td align="center">Figma Design</td>
     <td>&nbsp;&nbsp;&nbsp;</td>
     <td align="center">App Screen (Android)</td>
   </tr>
   <tr>
     <td><img src="assets/screenshots/home_ios.png" alt="App Screenshot" height=500></td>
-    <td>&nbsp;</td>
-    <td><img src="assets/screenshots/figma.png" alt="Figma Design" height=500></td>
     <td>&nbsp;</td>
     <td><img src="assets/screenshots/home_android.png" alt="Figma Design" height=500></td>
   </tr>
